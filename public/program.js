@@ -26,7 +26,9 @@ document
   .addEventListener("click", igMacheÖppis);
 
 
-const chatSocket = new WebSocket("wss://agile-tundra-14652.herokuapp.com:8080");
+const HOST = location.origin.replace(/^http/, 'ws')
+const chatSocket = new WebSocket(HOST);
+// const chatSocket = new WebSocket("wss://agile-tundra-14652.herokuapp.com:8080");
 chatSocket.onmessage = function (event) {
   console.log(event.data);
   const text = event.data;

@@ -1,41 +1,14 @@
 console.log('Starting ....');
+const express = require('express');
+const { Server } = require('ws');
 
-const express = require('express')
-const WebSocket = require('ws');
-const cors = require('cors')
-const bodyParser = require('body-parser');
+const PORT = process.env.PORT || 3000;
 
-const app = express()
-const port = process.env.PORT || 4567
+const server = express()
+  .use(express.static('public'))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-app.use(express.static('public'));
-app.use(cors({
-  origin: 'http://localhost:3000'
-}));
-app.use(bodyParser.text());
-
-
-// app.get('/message', (req, res) => {
-//   res.send('Hello World! ' + new Date().toISOString())
-// })
-
-app.post('/message', (req, res) => {
-  console.log('POST received', req.body);
-  const meldung =  req.body;
-  const date = new Date().toLocaleTimeString();
-  res.send(`Ig ha vo dir becho (${date}): ${meldung}` )
-})
-
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
-
-
-
-
-const wss = new WebSocket.Server({ port: 8080 });
-
+const wss = new Server({ server });
 const connections = [];
 wss.on('connection', function connection(ws) {
   console.log('Connection');
